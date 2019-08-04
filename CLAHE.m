@@ -1,0 +1,28 @@
+clear;
+RGB=imread('ui4.jpg');
+imshow(RGB);
+motblurr=fspecial('motion',15,13);
+blurred=imfilter(RGB,motblurr,'conv','circular');
+imshow(blurred);
+imwrite(blurred,'C:\Users\Pritesh J Shah\Downloads\dipminiproject\ui4CLAHE_blurred.jpg');
+RGB=blurred;
+LAB=rgb2lab(RGB);
+imwrite(LAB,'C:\Users\Pritesh J Shah\Downloads\dipminiproject\ui4CLAHE_labSpace.jpg');
+L=LAB(:,:,1)/100;
+L=adapthisteq(L,'NumTiles',[8,8],'ClipLimit',0.005);
+LAB(:,:,1)=L*100;
+J=lab2rgb(LAB);
+imwrite(J,'C:\Users\Pritesh J Shah\Downloads\dipminiproject\ui4CLAHE_after_clahe.jpg');
+figure;
+r=J(:,:,1);     
+g=J(:,:,2);
+b=J(:,:,3);
+rfiltered=imgaussfilt(r,2);
+bfiltered=imgaussfilt(b,2);
+gfiltered=imgaussfilt(g,2);
+J(:,:,1)=rfiltered;
+J(:,:,2)=gfiltered;
+J(:,:,3)=bfiltered;
+
+imshowpair(RGB,J,'montage');
+imwrite(J,'C:\Users\Pritesh J Shah\Downloads\dipminiproject\ui4CLAHE_final.jpg');
